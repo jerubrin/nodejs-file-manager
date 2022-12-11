@@ -1,4 +1,4 @@
-import { cd, cdUp } from "../fs/chdir.mjs";
+import { cd, cdUp, ls } from "../fs/chdir.mjs";
 import { getStartPath } from "../os/os.mjs";
 import { COL_MAGENTA, COL_RED, COL_RESET } from "./color.mjs";
 
@@ -9,11 +9,14 @@ const getResult = async (command) => {
 
   if (!argsArr.length) return '';
   if (argsArr[0] == '.exit' && (argsArr.length == 1)) process.exit(0);
+  if (argsArr[0] == 'ls' && (argsArr.length == 1)) {
+    return await ls(currentPath);
+  }
   if (argsArr[0] == 'up' && (argsArr.length == 1)) {
     currentPath = cdUp(currentPath);
     return '';
   }
-  if (argsArr[0] == 'cd' && (argsArr.length == 2)) {
+  if (argsArr[0] == 'cd') {
     const [ newPath, message ] = await cd(currentPath, argsArr.slice(1).join(' '));
     currentPath = newPath;
     return message;
