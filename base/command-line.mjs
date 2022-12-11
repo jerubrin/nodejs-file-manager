@@ -1,8 +1,12 @@
+import { stdin, stdout } from 'process';
+import readline from 'readline';
 import { cd, cdUp, ls } from "../fs/chdir.mjs";
 import { getStartPath } from "../os/os.mjs";
 import { COL_MAGENTA, COL_RED, COL_RESET } from "./color.mjs";
 
 let currentPath = null
+const INVALID_IN = `${COL_RED}Invalid input${COL_RESET}\n`;
+const rl = readline.createInterface(stdin, stdout)
 
 const getResult = async (command) => {
   const argsArr = command.trim().split(' ').filter(param => param);
@@ -21,24 +25,33 @@ const getResult = async (command) => {
     currentPath = newPath;
     return message;
   }
+  if (argsArr[0] == 'cat') {
+    currentPath = await cat(currentPath, argsArr.slice(1).join(' '));
+    return '';
+  }
 
-  return `${COL_RED}Invalid input${COL_RESET}\n`;
+  return INVALID_IN;
 }
 
 const showPath = () => {
   if (!currentPath) {
     currentPath = getStartPath();
   }
-  process.stdout.write(`You are currently in ${COL_MAGENTA}${currentPath}${COL_RESET} > `);
+  rl.setPrompt(`You are currently in ${COL_MAGENTA}${currentPath}${COL_RESET} > `);
+  rl.prompt();
 }
 
 const readCommands = async (chunk) => {
-  const command = chunk.toString();
-  process.stdout.write(
-    await getResult(command)
-  )
-  showPath()
+  try {
+    const command = chunk.toString();
+    process.stdout.write(
+      await getResult(command)
+    )
+    showPath();
+  } catch (e) {
+    process.stdout.write(INVALID_IN);
+  }
 }
 
 showPath()
-process.stdin.on('data', readCommands);
+rl.on('line', readCommands);
