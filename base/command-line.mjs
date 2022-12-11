@@ -1,11 +1,19 @@
+import { cdUp } from "../fs/chdir.mjs";
 import { getStartPath } from "../os/os.mjs";
 import { COL_MAGENTA, COL_RED, COL_RESET } from "./color.mjs";
 
 let currentPath = null
 
 const getResult = (command) => {
-  if (command.trim() == '.exit') process.exit(0);
-  if (command.trim() == '') return ''
+  const argsArr = command.trim().split(' ').filter(param => param);
+
+  if (!argsArr.length) return ''
+  if (argsArr[0] == '.exit' && (argsArr.length == 1)) process.exit(0);
+  if (argsArr[0] == 'up' && (argsArr.length == 1)) {
+    currentPath = cdUp(currentPath);
+    return ''
+  }
+
   return `${COL_RED}Invalid input${COL_RESET}\n`;
 }
 
