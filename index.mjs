@@ -7,8 +7,17 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 import { parseArgs } from "./base/args.mjs"
 import { COL_BLUE, COL_RESET, COL_YELLOW } from "./base/color.mjs";
 
-const data = {}
+const data = {};
+let isRunning = true;
 const cmd = path.join(__dirname, 'base', 'command-line.mjs');
+
+const showExitMessage = (returnSymbol = false) => {
+  if(isRunning) {
+    const before = returnSymbol ? '\n' : ''
+    console.log(`${before}${COL_BLUE}Thank you for using File Manager, ${COL_YELLOW}${data.username}${COL_BLUE}, goodbye!${COL_RESET}`)
+    isRunning = false;
+  }
+}
 
 const start = async () => {
   data.username = parseArgs().username;
@@ -16,10 +25,9 @@ const start = async () => {
   const cmdProcess = cp.spawn('node', [cmd]);
   cmdProcess.stdout.pipe(process.stdin);
   process.stdout.pipe(cmdProcess.stdin);
-  cmdProcess.on('close', () => {
-    console.log(`${COL_BLUE}Thank you for using File Manager, ${COL_YELLOW}${data.username}${COL_BLUE}, goodbye!${COL_RESET}`)
-    process.exit()
-  });
+  cmdProcess.on('close', () => process.exit());
+  process.on('exit', showExitMessage);
+  process.on('SIGINT', () => showExitMessage(true));
 }
 
 start()
