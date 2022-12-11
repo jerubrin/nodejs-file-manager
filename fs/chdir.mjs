@@ -6,10 +6,10 @@ import { COL_RED, COL_RESET } from '../base/color.mjs';
 export const cdUp = (currentPath) => path.parse(currentPath).dir;
 
 export const cd = async (currentPath, toPath) => {
-  if (toPath == '/' || toPath == '\\') {
-    return [ path.parse(currentPath).root, '' ]
-  }
   toPath = toPath.replaceAll('"', '').replaceAll(`'`, '');
+  if (path.isAbsolute(toPath)) {
+    currentPath = '';
+  }
   const newPath = path.join(currentPath, toPath);
   return await new Promise((resolve) => { 
     fs.stat(newPath, (err, stat) => {
