@@ -1,6 +1,7 @@
 import { stdin, stdout } from 'process';
 import readline from 'readline';
 import { cd, cdUp, ls } from "../fs/chdir.mjs";
+import { cat } from '../fs/file.mjs';
 import { getStartPath } from "../os/os.mjs";
 import { COL_MAGENTA, COL_RED, COL_RESET } from "./color.mjs";
 

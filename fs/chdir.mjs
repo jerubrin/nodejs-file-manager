@@ -1,20 +1,20 @@
-import path, { resolve } from 'path'
+import path from 'path'
 import fs from 'fs'
 import { readdir, stat } from 'fs/promises'
 import { COL_RED, COL_RESET } from '../base/color.mjs';
+import { removeBrakets } from '../utils/utils.mjs';
 
 export const cdUp = (currentPath) => path.parse(currentPath).dir;
 
 export const cd = async (currentPath, toPath) => {
-  toPath = toPath.replaceAll('"', '').replaceAll(`'`, '');
-  if (path.isAbsolute(toPath)) {
-    currentPath = '';
-  }
-  const newPath = path.join(currentPath, toPath);
+  toPath = removeBrakets(toPath)
+  const newPath = path.isAbsolute(toPath)
+    ? toPath
+    : path.join(currentPath, toPath);
   return await new Promise((resolve) => { 
     fs.stat(newPath, (err, stat) => {
       if (err || !stat.isDirectory()) {
-        resolve([ currentPath, `${COL_RED}wrong path!${COL_RESET}\n` ]) 
+        resolve([ currentPath, `${COL_RED}Wrong path!${COL_RESET}\n` ]) 
       }
       resolve([ newPath, '' ])
     });
