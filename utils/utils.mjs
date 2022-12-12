@@ -1,1 +1,0 @@
-export const removeBrakets = (toPath) => toPath.replaceAll('"', '').replaceAll(`'`, '');

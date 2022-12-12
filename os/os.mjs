@@ -1,3 +1,3 @@
 import os from 'os';
 
-export const getStartPath = () => os.homedir()
+export const getStartPath = () => os.homedir();

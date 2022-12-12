@@ -23,8 +23,6 @@ const start = async () => {
   data.username = parseArgs().username;
   console.log(`${COL_BLUE}Welcome to the File Manager, ${COL_YELLOW}${data.username}${COL_BLUE}!${COL_RESET}`);
   const cmdProcess = cp.fork(cmd);
-  // cmdProcess.stdout.pipe(process.stdin);
-  // process.stdout.pipe(cmdProcess.stdin);
   cmdProcess.on('close', () => process.exit());
   process.on('exit', showExitMessage);
   process.on('SIGINT', () => showExitMessage(true));

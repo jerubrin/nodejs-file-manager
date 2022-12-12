@@ -1,8 +1,8 @@
 import path from 'path'
-import fs from 'fs'
 import { readdir, stat } from 'fs/promises'
-import { COL_RED, COL_RESET } from '../base/color.mjs';
-import { removeBrakets } from '../utils/utils.mjs';
+import { exists, removeBrakets } from '../base/utils.mjs';
+import { stdout } from 'process';
+import { EOL } from 'os';
 
 export const cdUp = (currentPath) => path.parse(currentPath).dir;
 
@@ -11,19 +11,13 @@ export const cd = async (currentPath, toPath) => {
   const newPath = path.isAbsolute(toPath)
     ? toPath
     : path.join(currentPath, toPath);
-  return await new Promise((resolve) => { 
-    fs.stat(newPath, (err, stat) => {
-      if (err || !stat.isDirectory()) {
-        resolve([ currentPath, `${COL_RED}Wrong path!${COL_RESET}\n` ]) 
-      }
-      resolve([ newPath, '' ])
-    });
-  });
+  const [fullPath, message] = await exists(currentPath, newPath)
+  if (message) { stdout.write(message); }
+  return fullPath;
 }
 
 export const ls = async (currentPath) => {
   const files = await readdir(currentPath)
-  console.log('readdir')
   const fileList = [];
   const dirList = [];
   const otherList = [];
@@ -56,5 +50,5 @@ export const ls = async (currentPath) => {
       .sort((a, b) => a.toLowerCase().localeCompare(b.toLowerCase()))
       .map((file) => ({Name: file, Type: 'unknown'})),
   ] );
-  return '';
+  stdout.write(EOL)
 }
