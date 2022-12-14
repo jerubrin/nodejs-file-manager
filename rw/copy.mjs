@@ -23,6 +23,10 @@ export const cp = async (currentPath, args) => {
   }
 };
 
+const checkForInfinityCopy = (fromPath, toPath) =>
+  fromPath == path.parse(toPath).dir
+  && path.parse(fromPath).base == path.parse(toPath).base
+
 const checkForExists = async (toPath) => {
   const isDirectoryExists = await existsDir(toPath)
   if (isDirectoryExists) return
@@ -34,23 +38,33 @@ const checkForExists = async (toPath) => {
 }
 
 const copyFile  = async (pathFromFile, pathToFile) => {
-  console.log(pathFromFile, pathToFile);
-  createReadStream(pathFromFile).pipe(
-    createWriteStream(pathToFile)
-  )
+  try {
+    await new Promise((resolve, reject) => {
+      const rs = createReadStream(pathFromFile);
+      const ws = createWriteStream(pathToFile)
+      rs.on('error', err => { reject(err) });
+      ws.on('error', err => { reject(err) });
+      rs.pipe(ws);
+      ws.on('unpipe', () => resolve());
+    })
+  } catch(err) {
+    throw new Error(err) ;
+  };
 }
 
 const copyDir = async (fromPath, toPath) => {
   const ls = await fsPromises.readdir(fromPath)
+  if (checkForInfinityCopy(fromPath, toPath)) return;
   for(let file of ls) {
     const pathFromFile = path.join(fromPath, file)
     const pathToFile = path.join(toPath, file)
     const fileStat = await fsPromises.stat(pathFromFile)
     if(fileStat.isFile()) {
-      copyFile(pathFromFile, pathToFile)
+      await copyFile(pathFromFile, pathToFile)
     }
     if(fileStat.isDirectory()) {
-      copyDir(pathFromFile, pathToFile)
+      await checkForExists(pathToFile);
+      await copyDir(pathFromFile, pathToFile);
     }
   }
 }

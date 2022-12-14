@@ -4,6 +4,7 @@ import { cd, cdUp, ls } from "../fs/chdir.mjs";
 import { getStartPath } from "../os/os.mjs";
 import { add } from '../rw/add-file.mjs';
 import { cp } from '../rw/copy.mjs';
+import { mv } from '../rw/move.mjs';
 import { cat } from '../rw/read-file.mjs';
 import { rn } from '../rw/rename.mjs';
 import { COL_MAGENTA, COL_RED, COL_RESET } from "./color.mjs";
@@ -37,7 +38,7 @@ const getResult = async (command) => {
     return await cp(currentPath, argsArr.slice(1).join(' '));
   }
   if (argsArr[0] == 'mv') {
-    return await cp(currentPath, argsArr.slice(1).join(' '));
+    return await mv(currentPath, argsArr.slice(1).join(' '));
   }
 
   return stdout.write(INVALID_IN);
