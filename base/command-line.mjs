@@ -1,6 +1,7 @@
 import { stdin, stdout } from 'process';
 import readline from 'readline';
-import { cd, cdUp, ls } from "../fs/chdir.mjs";
+import { cd, cdUp } from "../fs/chdir.mjs";
+import { ls } from '../fs/list-of-files.mjs';
 import { getStartPath, osCmd } from "../os/os.mjs";
 import { add } from '../rw/add-file.mjs';
 import { cp } from '../rw/copy.mjs';
@@ -65,7 +66,7 @@ const readCommands = async (chunk) => {
     await getResult(command);
     showPath();
   } catch (e) {
-    // process.stdout.write(e.message + EOL);
+    process.stdout.write(e.message + EOL);
     console.error(INVALID_IN);
     showPath();
   }
