@@ -1,13 +1,12 @@
 import { createReadStream } from 'fs'
 import path, { resolve } from 'path';
 import { BG_RED, COL_MAGENTA, COL_RED, COL_RESET } from '../base/color.mjs';
-import { removeBrakets } from '../base/utils.mjs'
+import { getAbsolutePath, removeBrakets } from '../base/utils.mjs'
 
 export const cat = async (currentPath, file) => new Promise(resolve => {
   file = removeBrakets(file);
-  const filePath = path.isAbsolute(file)
-    ? file
-    : path.join(currentPath, file)
+  const filePath = getAbsolutePath(currentPath, file);
+  
   try {
     let data = ''
     const rs = createReadStream(filePath, 'utf-8');

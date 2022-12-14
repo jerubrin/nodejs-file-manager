@@ -3,7 +3,9 @@ import readline from 'readline';
 import { cd, cdUp, ls } from "../fs/chdir.mjs";
 import { getStartPath } from "../os/os.mjs";
 import { add } from '../rw/add-file.mjs';
+import { cp } from '../rw/copy.mjs';
 import { cat } from '../rw/read-file.mjs';
+import { rn } from '../rw/rename.mjs';
 import { COL_MAGENTA, COL_RED, COL_RESET } from "./color.mjs";
 
 let currentPath = null
@@ -25,9 +27,14 @@ const getResult = async (command) => {
   if (argsArr[0] == 'cat') {
     return await cat(currentPath, argsArr.slice(1).join(' '));
   }
-
   if (argsArr[0] == 'add') {
     return await add(currentPath, argsArr.slice(1).join(' '));
+  }
+  if (argsArr[0] == 'rn') {
+    return await rn(currentPath, argsArr.slice(1).join(' '));
+  }
+  if (argsArr[0] == 'cp') {
+    return await cp(currentPath, argsArr.slice(1).join(' '));
   }
 
   return stdout.write(INVALID_IN);
@@ -47,6 +54,7 @@ const readCommands = async (chunk) => {
     await getResult(command);
     showPath();
   } catch (e) {
+    process.stdout.write(e.message);
     process.stdout.write(INVALID_IN);
   }
 }

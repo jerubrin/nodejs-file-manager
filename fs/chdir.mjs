@@ -1,6 +1,6 @@
 import path from 'path'
 import { readdir, stat } from 'fs/promises'
-import { existsDir, removeBrakets } from '../base/utils.mjs';
+import { existsDir, getAbsolutePath, removeBrakets } from '../base/utils.mjs';
 import { stdout } from 'process';
 import { EOL } from 'os';
 import { COL_RED, COL_RESET } from '../base/color.mjs';
@@ -9,9 +9,7 @@ export const cdUp = (currentPath) => path.parse(currentPath).dir;
 
 export const cd = async (currentPath, toPath) => {
   toPath = removeBrakets(toPath)
-  const newPath = path.isAbsolute(toPath)
-    ? toPath
-    : path.join(currentPath, toPath);
+  const newPath = getAbsolutePath(currentPath, toPath);
   
   const isCorrect = await existsDir(newPath)
   if(!isCorrect) {
