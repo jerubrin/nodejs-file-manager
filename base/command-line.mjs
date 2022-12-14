@@ -36,6 +36,9 @@ const getResult = async (command) => {
   if (argsArr[0] == 'cp') {
     return await cp(currentPath, argsArr.slice(1).join(' '));
   }
+  if (argsArr[0] == 'mv') {
+    return await cp(currentPath, argsArr.slice(1).join(' '));
+  }
 
   return stdout.write(INVALID_IN);
 }

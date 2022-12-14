@@ -14,10 +14,12 @@ export const cp = async (currentPath, args) => {
     
     if(!hasFromFile) throw new Error('File not found!');
   
-    await copyByPath(fromPath, toPath)
-    console.log(`${COL_GREEN}Done!${COL_RESET}`)
+    await copyByPath(fromPath, toPath);
+    console.log(`${COL_GREEN}Done!${COL_RESET}`);
+    return {fromPath, toPath};
   } catch (e) {
     console.error(`${COL_RED}Can't copy file: ${BG_RED}${e.message}${COL_RESET}`);
+    return false;
   }
 };
 
