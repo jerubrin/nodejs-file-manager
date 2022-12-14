@@ -42,3 +42,10 @@ export const getPathesFromArgs = (args) => {
 }
 
 export const getAbsolutePath = (curentPath, toPath) => path.isAbsolute(toPath) ? toPath : path.join(curentPath, toPath);
+
+export const isSubDir = (dir, subDir) => {
+  console.log(`dir: ${dir} subDir: ${path.dirname(subDir)}`)
+  if (path.dirname(subDir) == dir) return subDir;
+  if (path.dirname(subDir) == path.parse(subDir).root) return false;
+  return isSubDir(dir, path.dirname(subDir))
+}

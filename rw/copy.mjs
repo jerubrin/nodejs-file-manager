@@ -2,7 +2,7 @@ import { createReadStream, createWriteStream } from 'fs';
 import fsPromises from 'fs/promises'
 import path from 'path';
 import { BG_RED, COL_GREEN, COL_RED, COL_RESET } from '../base/color.mjs';
-import { exists, existsDir, getAbsolutePath, getPathesFromArgs } from '../base/utils.mjs';
+import { exists, existsDir, getAbsolutePath, getPathesFromArgs, isSubDir } from '../base/utils.mjs';
 
 export const cp = async (currentPath, args) => {
   try {
@@ -13,6 +13,9 @@ export const cp = async (currentPath, args) => {
     const hasFromFile = await exists(fromPath);
     
     if(!hasFromFile) throw new Error('File not found!');
+    
+    const hasSubDir = isSubDir(path.resolve(fromPath), path.resolve(toPath))
+    if (hasSubDir) throw new Error(`Denied moving or copying a directories into subdirectories`)
   
     await copyByPath(fromPath, toPath);
     console.log(`${COL_GREEN}Done!${COL_RESET}`);
