@@ -1,8 +1,7 @@
-import { EOL } from 'os';
 import { stdin, stdout } from 'process';
 import readline from 'readline';
 import { cd, cdUp, ls } from "../fs/chdir.mjs";
-import { getStartPath } from "../os/os.mjs";
+import { getStartPath, osCmd } from "../os/os.mjs";
 import { add } from '../rw/add-file.mjs';
 import { cp } from '../rw/copy.mjs';
 import { mv } from '../rw/move.mjs';
@@ -45,6 +44,9 @@ const getResult = async (command) => {
   if (argsArr[0] == 'rm') {
     return await rm(currentPath, argsArr.slice(1).join(' '));
   }
+  if (argsArr[0] == 'os') {
+    return await osCmd(argsArr.slice(1).join(' '));
+  }
 
   return stdout.write(INVALID_IN);
 }
@@ -63,7 +65,7 @@ const readCommands = async (chunk) => {
     await getResult(command);
     showPath();
   } catch (e) {
-    process.stdout.write(e.message + EOL);
+    // process.stdout.write(e.message + EOL);
     console.error(INVALID_IN);
     showPath();
   }

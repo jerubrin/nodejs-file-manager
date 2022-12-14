@@ -15,7 +15,7 @@ export const cp = async (currentPath, args) => {
     if(!hasFromFile) throw new Error('File not found!');
     
     const hasSubDir = isSubDir(path.resolve(fromPath), path.resolve(toPath))
-    if (hasSubDir) throw new Error(`Denied moving or copying a directories into subdirectories`)
+    if (hasSubDir) throw new Error(`Denied moving or copying directories into subdirectories`)
   
     await copyByPath(fromPath, toPath);
     console.log(`${COL_GREEN}Done!${COL_RESET}`);
@@ -57,6 +57,7 @@ const copyFile  = async (pathFromFile, pathToFile) => {
 
 const copyDir = async (fromPath, toPath) => {
   const ls = await fsPromises.readdir(fromPath)
+  await checkForExists(toPath);
   if (checkForInfinityCopy(fromPath, toPath)) return;
   for(let file of ls) {
     const pathFromFile = path.join(fromPath, file)
@@ -74,13 +75,14 @@ const copyDir = async (fromPath, toPath) => {
 
 const copyByPath = async (fromPath, toPath) => {
   const isDirectory = (await fsPromises.stat(fromPath)).isDirectory()
+  
+  await checkForExists(toPath);
+  const fileName = path.parse(fromPath).base;
+  const toPathFile = path.join(toPath, fileName);
+  
   if(isDirectory) {
-    await checkForExists(toPath);
-    await copyDir(fromPath, toPath);
+    await copyDir(fromPath, toPathFile);
   } else {
-    await checkForExists(toPath);
-    const fileName = path.parse(fromPath).base;
-    const toPathFile = path.join(toPath, fileName);
     await copyFile(fromPath, toPathFile);
   }
 }
