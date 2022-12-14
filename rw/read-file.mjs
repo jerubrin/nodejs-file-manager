@@ -1,5 +1,4 @@
 import { createReadStream } from 'fs'
-import path, { resolve } from 'path';
 import { BG_RED, COL_MAGENTA, COL_RED, COL_RESET } from '../base/color.mjs';
 import { getAbsolutePath, removeBrakets } from '../base/utils.mjs'
 

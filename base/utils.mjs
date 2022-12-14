@@ -1,7 +1,5 @@
 import fs from 'fs'
-import { EOL } from 'os';
 import path from 'path';
-import { COL_RED, COL_RESET } from './color.mjs';
 
 export const removeBrakets = (toPath) => toPath.replaceAll('"', '').replaceAll(`'`, '');
 

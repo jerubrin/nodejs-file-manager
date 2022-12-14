@@ -1,3 +1,4 @@
+import { EOL } from 'os';
 import { stdin, stdout } from 'process';
 import readline from 'readline';
 import { cd, cdUp, ls } from "../fs/chdir.mjs";
@@ -6,6 +7,7 @@ import { add } from '../rw/add-file.mjs';
 import { cp } from '../rw/copy.mjs';
 import { mv } from '../rw/move.mjs';
 import { cat } from '../rw/read-file.mjs';
+import { rm } from '../rw/remove.mjs';
 import { rn } from '../rw/rename.mjs';
 import { COL_MAGENTA, COL_RED, COL_RESET } from "./color.mjs";
 
@@ -40,6 +42,9 @@ const getResult = async (command) => {
   if (argsArr[0] == 'mv') {
     return await mv(currentPath, argsArr.slice(1).join(' '));
   }
+  if (argsArr[0] == 'rm') {
+    return await rm(currentPath, argsArr.slice(1).join(' '));
+  }
 
   return stdout.write(INVALID_IN);
 }
@@ -58,8 +63,9 @@ const readCommands = async (chunk) => {
     await getResult(command);
     showPath();
   } catch (e) {
-    process.stdout.write(e.message);
-    process.stdout.write(INVALID_IN);
+    process.stdout.write(e.message + EOL);
+    console.error(INVALID_IN);
+    showPath();
   }
 }
 
