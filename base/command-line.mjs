@@ -13,6 +13,7 @@ import { rm } from '../rw/remove.mjs';
 import { rn } from '../rw/rename.mjs';
 import { compress, decompress } from '../zip/zip.mjs';
 import { COL_MAGENTA, COL_RED, COL_RESET } from "./color.mjs";
+import { existsDir } from './utils.mjs';
 
 let currentPath = null
 const INVALID_IN = `${COL_RED}Invalid input${COL_RESET}\n`;
@@ -65,7 +66,10 @@ const getResult = async (command) => {
   return stdout.write(INVALID_IN);
 }
 
-const showPath = () => {
+const showPath = async () => {
+  if (currentPath && !await existsDir(currentPath)) {
+    currentPath = null;
+  }
   if (!currentPath) {
     currentPath = getStartPath();
   }
@@ -77,13 +81,13 @@ const readCommands = async (chunk) => {
   try {
     const command = chunk.toString();
     await getResult(command);
-    showPath();
+    await showPath();
   } catch (e) {
     process.stdout.write(e.message + EOL);
     console.error(INVALID_IN);
-    showPath();
+    await showPath();
   }
 }
 
-showPath()
+await showPath()
 rl.on('line', readCommands);

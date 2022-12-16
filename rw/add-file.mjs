@@ -1,4 +1,3 @@
-import path from 'path';
 import { getAbsolutePath, removeBrakets } from '../base/utils.mjs';
 import { createWriteStream } from 'fs';
 import { BG_GREEN, BG_RED, COL_GREEN, COL_RED, COL_RESET } from '../base/color.mjs';
