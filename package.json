@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.esm",
   "scripts": {
-    "start": "node index.esm"
+    "start": "node index.mjs"
   },
   "repository": {
     "type": "git",
