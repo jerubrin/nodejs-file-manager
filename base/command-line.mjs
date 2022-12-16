@@ -11,6 +11,7 @@ import { mv } from '../rw/move.mjs';
 import { cat } from '../rw/read-file.mjs';
 import { rm } from '../rw/remove.mjs';
 import { rn } from '../rw/rename.mjs';
+import { compress, decompress } from '../zip/zip.mjs';
 import { COL_MAGENTA, COL_RED, COL_RESET } from "./color.mjs";
 
 let currentPath = null
@@ -53,6 +54,13 @@ const getResult = async (command) => {
   if (argsArr[0] == 'hash') {
     return await hash(currentPath, argsArr.slice(1).join(' '));
   }
+  if (argsArr[0] == 'compress') {
+    return await compress(currentPath, argsArr.slice(1).join(' '));
+  }
+  if (argsArr[0] == 'decompress') {
+    return await decompress(currentPath, argsArr.slice(1).join(' '));
+  }
+  
 
   return stdout.write(INVALID_IN);
 }
