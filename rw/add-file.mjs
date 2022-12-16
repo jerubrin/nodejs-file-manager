@@ -10,7 +10,7 @@ export const add = async (currentPath, file) => new Promise((res) => {
   try {
     const ws = createWriteStream(pathToFile, {flags: 'ax'});
     ws.on('error', () => {
-      console.log(`${COL_RED}Can't create file ${BG_RED}"${pathToFile}"${COL_RESET}${COL_RED}!${COL_RESET}`);
+      console.log(`${COL_RED}Operation failed: Can't create file ${BG_RED}"${pathToFile}"${COL_RESET}${COL_RED}!${COL_RESET}`);
       res();
     });
     ws.write('', 'utf-8', (err) => {
@@ -20,7 +20,7 @@ export const add = async (currentPath, file) => new Promise((res) => {
       }
     });
   } catch {
-    console.log(`${COL_RED}Can't create file ${BG_RED}"${pathToFile}"${COL_RESET}${COL_RED}!${COL_RESET}`);
+    console.log(`${COL_RED}Operation failed: Can't create file ${BG_RED}"${pathToFile}"${COL_RESET}${COL_RED}!${COL_RESET}`);
     res();
   }
 })

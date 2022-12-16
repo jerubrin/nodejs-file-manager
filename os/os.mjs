@@ -33,7 +33,7 @@ export const osCmd = async (args) => {
     case '--homedir': osHomeDir(); break;
     case '--username': osUserName(); break;
     case '--architecture': osArchitecture(); break;
-    default: stdout.write(`${COL_RED}Wrong argument.${COL_RESET}`);
+    default: stdout.write(`${COL_RED}Invalid input: Wrong argument.${COL_RESET}`);
   }
   stdout.write(os.EOL + COL_RESET);
 }

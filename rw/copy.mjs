@@ -21,7 +21,7 @@ export const cp = async (currentPath, args) => {
     console.log(`${COL_GREEN}Done!${COL_RESET}`);
     return {fromPath, toPath};
   } catch (e) {
-    console.error(`${COL_RED}Can't copy file: ${BG_RED}${e.message}${COL_RESET}`);
+    console.error(`${COL_RED}Operation failed: Can't copy file ${BG_RED}${e.message}${COL_RESET}`);
     return false;
   }
 };
@@ -36,7 +36,7 @@ const checkForExists = async (toPath) => {
   try {
     await fsPromises.mkdir(toPath, {recursive: true})
   } catch {
-    throw Error(`Can't create new directory`)
+    throw Error(`Operation failed: Can't create new directory`)
   }
 }
 

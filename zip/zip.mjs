@@ -11,13 +11,13 @@ const compressDecompress = async (fromPath, toPath, isCompressing = true) =>
     const zipStream = isCompressing ? zlib.createBrotliCompress() :zlib.createBrotliDecompress()
     try {
         rs.pipe(zipStream).pipe(ws).on('error', err => {
-          resolve(console.error(`${COL_RED}${err.message}${COL_RESET}`));
+          resolve(console.error(`${COL_RED}Operation failed: ${err.message}${COL_RESET}`));
         }).on('finish', () => {
           const message = isCompressing ? 'Compressed' : 'Decompressed'
           resolve(console.log(`${COL_GREEN}${message} to ${BG_GREEN}${toPath}${COL_RESET}`));
         });
     } catch (err) {
-      resolve(console.error(`${COL_RED}${err.message}${COL_RESET}`));
+      resolve(console.error(`${COL_RED}Operation failed: ${err.message}${COL_RESET}`));
     }
   })
 
@@ -42,7 +42,7 @@ export const compress = async (currentPath, args) => {
 
     return {fromPath, toPath};
   } catch (e) {
-    console.error(`${COL_RED}Can't compress file: ${BG_RED}${e.message}${COL_RESET}`);
+    console.error(`${COL_RED}Operation failed: Can't compress file ${BG_RED}${e.message}${COL_RESET}`);
     return false;
   }
 }
@@ -65,7 +65,7 @@ export const decompress = async (currentPath, args) => {
 
     return {fromPath, toPath};
   } catch (e) {
-    console.error(`${COL_RED}Can't decompress file: ${BG_RED}${e.message}${COL_RESET}`);
+    console.error(`${COL_RED}Operation failed: Can't decompress file ${BG_RED}${e.message}${COL_RESET}`);
     return false;
   }
 }

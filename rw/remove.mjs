@@ -11,6 +11,6 @@ export const rm = async (currentPath, file) => {
     console.log(`${COL_GREEN}"${BG_GREEN}${filePath}${COL_RESET}${COL_GREEN}" has been removed!${COL_RESET}`)
   } catch (err) {
     console.error(err.message);
-    console.error(`${COL_RED}Can't remove file or directory ${BG_RED}"${filePath}"${COL_RESET}${COL_RED}!${COL_RESET}`);
+    console.error(`${COL_RED}Operation failed: Can't remove file or directory ${BG_RED}"${filePath}"${COL_RESET}${COL_RED}!${COL_RESET}`);
   }
 }

@@ -24,6 +24,6 @@ export const mv = async (currentPath, args) => {
       }
     }
   } catch(err) {
-    console.error(`${COL_RED}Can't move file or directory: ${BG_RED}${err.message}${COL_RESET}`);
+    console.error(`${COL_RED}Operation failed: Can't move file or directory ${BG_RED}${err.message}${COL_RESET}`);
   }
 }

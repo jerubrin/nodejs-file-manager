@@ -15,7 +15,7 @@ const getHash = async (filePath) => new Promise((resolve) => {
     });
     hashStream.on('error', err => 
     {
-      console.error(`${COL_RED}${err.message}${COL_RESET}`);
+      console.error(`${COL_RED}Operation failed: ${err.message}${COL_RESET}`);
       resolve();
     });
 });
@@ -26,10 +26,10 @@ export const hash = async (currentPath, args) => {
     const filePath = getAbsolutePath(currentPath, file);
 
     const isFile = await existsFile(filePath)
-    if(!isFile) return console.error(`${COL_RED}Can't find file ${BG_RED}${filePath}${COL_RESET}`)
+    if(!isFile) return console.error(`${COL_RED}Operation failed: Can't find file ${BG_RED}${filePath}${COL_RESET}`)
 
     await getHash(filePath)
   } catch (err) {
-    console.error(`${COL_RED}${err.message}${COL_RESET}`);
+    console.error(`${COL_RED}Operation failed: ${err.message}${COL_RESET}`);
   }
 };

@@ -18,6 +18,6 @@ export const rn = async (currentPath, args) => {
     await fsPromises.rename(fromPath, toPath);
     console.log(`${COL_GREEN}Done!${COL_RESET}`)
   } catch (e) {
-    console.error(`${COL_RED}Can't rename file: ${BG_RED}${e.message}${COL_RESET}`);
+    console.error(`${COL_RED}Operation failed: Can't rename file ${BG_RED}${e.message}${COL_RESET}`);
   }
 };

@@ -11,7 +11,7 @@ export const cat = async (currentPath, file) => new Promise(resolve => {
     const rs = createReadStream(filePath, 'utf-8');
 
     rs.on('error', () => {
-      console.error(`${COL_RED}Can't read file ${BG_RED}"${filePath}"${COL_RESET}${COL_RED}!${COL_RESET}`);
+      console.error(`${COL_RED}Operation failed: Can't read file ${BG_RED}"${filePath}"${COL_RESET}${COL_RED}!${COL_RESET}`);
       resolve();
     });
     rs.on('data', chunk => data += chunk );
@@ -20,7 +20,7 @@ export const cat = async (currentPath, file) => new Promise(resolve => {
       resolve();
     });
   } catch(e) {
-    console.error(`${COL_RED}Can't read file "${COL_MAGENTA}${filePath}${COL_RESET}${COL_RED}"!${COL_RESET}`);
+    console.error(`${COL_RED}Operation failed: Can't read file "${COL_MAGENTA}${filePath}${COL_RESET}${COL_RED}"!${COL_RESET}`);
     resolve();
   }
 });

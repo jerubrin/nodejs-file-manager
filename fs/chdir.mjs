@@ -11,7 +11,7 @@ export const cd = async (currentPath, toPath) => {
   
   const isCorrect = await existsDir(newPath)
   if(!isCorrect) {
-    console.error(`${COL_RED}Wrong path!${COL_RESET}`);
+    console.error(`${COL_RED}Invalid input: Wrong path!${COL_RESET}`);
     return currentPath;
   }
   return newPath;
