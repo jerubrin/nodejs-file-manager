@@ -5,9 +5,11 @@ export const removeBrakets = (toPath) => toPath.replaceAll('"', '').replaceAll(`
 
 export const existsDir = async (fullPath) => await exists(fullPath, true);
 
-export const exists = async (fullPath, checkDir = false) => new Promise((resolve) => { 
+export const existsFile = async (fullPath) => await exists(fullPath, false, true);
+
+export const exists = async (fullPath, checkDir = false, checkFile = false) => new Promise((resolve) => { 
   fs.stat(fullPath, (err, stat) => {
-    if (err || (checkDir && !stat.isDirectory())) {
+    if ( err || (checkDir && !stat.isDirectory()) || (checkFile && !stat.isFile()) ) {
       resolve(false);
     }
     resolve(true);

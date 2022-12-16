@@ -1,7 +1,9 @@
+import { EOL } from 'os';
 import { stdin, stdout } from 'process';
 import readline from 'readline';
 import { cd, cdUp } from "../fs/chdir.mjs";
 import { ls } from '../fs/list-of-files.mjs';
+import { hash } from '../hash/hash.mjs';
 import { getStartPath, osCmd } from "../os/os.mjs";
 import { add } from '../rw/add-file.mjs';
 import { cp } from '../rw/copy.mjs';
@@ -47,6 +49,9 @@ const getResult = async (command) => {
   }
   if (argsArr[0] == 'os') {
     return await osCmd(argsArr.slice(1).join(' '));
+  }
+  if (argsArr[0] == 'hash') {
+    return await hash(currentPath, argsArr.slice(1).join(' '));
   }
 
   return stdout.write(INVALID_IN);
